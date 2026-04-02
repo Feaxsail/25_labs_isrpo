@@ -25,9 +25,9 @@ const user = {
   city: "Москва",
 };
 
-const userName = user.name;
-const userAge = user.age;
-console.log(userName, userAge);
+//const userName = user.name;
+//const userAge = user.age;
+//console.log(userName, userAge);
 
 const { name, age, city } = user;
 console.log(name, age, city);
@@ -383,3 +383,102 @@ async function createPost() {
   }
 }
 createPost();
+
+// Шаг 12
+console.log("Optional Chaining");
+
+
+const user1 = { address: { street: "Пушкина", city: "Москва" } };
+const user2 = {};
+const cityOld = user2.address && user2.address.city;
+console.log("Город (старый способ):", cityOld);
+const cityNew = user2.address?.city;
+console.log("Город (новый способ):", cityNew);
+const street = user1.address?.street;
+console.log("Улица:", street);
+
+
+const admin = {
+  name: "Администратор",
+  permissions: { canDelete: () => true },
+};
+const guest = { name: "Гость" };
+console.log("Админ может удалять?", admin.permissions?.canDelete?.());
+console.log("Гость может удалять?", guest.permissions?.canDelete?.());
+
+
+const company = {
+  name: "Tech Corp",
+  employees: [
+    { name: "Надежда", role: "Developer" },
+    { name: "Анна", role: "Designer" },
+  ],
+};
+const startup = { name: "New Startup" };
+console.log("Первый сотрудник:", company.employees?.[0]?.name);
+console.log("Первый сотрудник стартапа:", startup.employees?.[0]?.name);
+
+console.log("Nullish Coalescing");
+
+const value1 = 0;
+const value2 = "";
+const value3 = false;
+const value4 = null;
+const value5 = undefined;
+
+console.log('value1 || "default":', value1 || "default");
+console.log('value2 || "default":', value2 || "default");
+console.log('value3 || "default":', value3 || "default");
+console.log('value1 ?? "default":', value1 ?? "default");
+console.log('value2 ?? "default":', value2 ?? "default");
+console.log('value3 ?? "default":', value3 ?? "default");
+console.log('value4 ?? "default":', value4 ?? "default");
+console.log('value5 ?? "default":', value5 ?? "default");
+
+
+function displayUserSettings(settings) {
+  const theme = settings?.theme ?? "light";
+  const fontSize = settings?.fontSize ?? 14;
+  const notifications = settings?.notifications ?? true;
+  console.log("Настройки пользователя:");
+  console.log("Тема:", theme);
+  console.log("Размер шрифта:", fontSize);
+  console.log("Уведомления:", notifications);
+}
+displayUserSettings({ theme: "dark", fontSize: 16 });
+displayUserSettings({ notifications: false });
+displayUserSettings({});
+
+
+const apiResponse = {
+  data: {
+    user: {
+      profile: {
+        name: "Иван - опастный чувачок",
+        age: 9
+      }
+    }
+  }
+};
+const userName = apiResponse?.data?.user?.profile?.name ?? "Аноним";
+const userAge = apiResponse?.data?.user?.profile?.age ?? 0;
+console.log(`Имя: ${userName}, Возраст: ${userAge}`);
+
+const emptyResponse = {};
+const emptyName = emptyResponse?.data?.user?.profile?.name ?? "Аноним";
+console.log("Имя из пустого ответа:", emptyName);
+
+
+const order = {
+  customer: { name: "Петр первый пукнул первый", email: "petr1@example.com" },
+  shipping: { address: { city: "СПб", street: "Невский нет блин, достаевский :)" } },
+  payment: { method: "card" }
+};
+function displayOrder(orderData) {
+  const customerName = orderData?.customer?.name ?? "Не указан";
+  const city = orderData?.shipping?.address?.city ?? "Не указан";
+  const paymentMethod = orderData?.payment?.method ?? "не выбран";
+  console.log(`Заказ: клиент ${customerName}, город ${city}, оплата: ${paymentMethod}`);
+}
+displayOrder(order);
+displayOrder({});
