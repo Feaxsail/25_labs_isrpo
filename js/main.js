@@ -235,3 +235,90 @@ checkInventory("Смартфон", true)
 checkInventory("Планшет", false)
   .then((message) => console.log(message))
   .catch((error) => console.error(error));
+
+  // Шаг 10
+console.log("Async/Await");
+
+
+async function greet() {
+  return "Привет!";
+}
+greet().then((message) => console.log(message));
+
+function getWeather() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ temp: 22, condition: "Солнечно" });
+    }, 1000);
+  });
+}
+async function showWeather() {
+  console.log("Загрузка погоды...");
+  const weather = await getWeather();
+  console.log(`Температура: ${weather.temp}°C, ${weather.condition}`);
+}
+showWeather();
+
+
+async function fetchData(shouldFail) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldFail) {
+        reject("Ошибка при загрузке данных");
+      } else {
+        resolve({ data: "Важные данные" });
+      }
+    }, 800);
+  });
+}
+async function getData() {
+  try {
+    const result = await fetchData(false);
+    console.log("Успешно:", result.data);
+  } catch (error) {
+    console.log("Поймана ошибка:", error);
+  }
+}
+getData();
+
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function cookDinner() {
+  console.log("Начинаем готовить ужин...");
+  await delay(1000);
+  console.log("Суп готов");
+  await delay(1000);
+  console.log("Гарнир готов");
+  await delay(1000);
+  console.log("Мясо готово");
+  console.log("Ужин подан!");
+}
+cookDinner();
+
+
+async function cookDinnerFast() {
+  console.log("Готовим всё одновременно...");
+  await Promise.all([delay(1000), delay(1000), delay(1000)]);
+  console.log("Все блюда готовы!");
+}
+cookDinnerFast();
+
+// 10.3 
+async function processOrder() {
+  try {
+    console.log("Проверка наличия товара...");
+    await delay(500);
+    console.log("Товар в наличии");
+    console.log("Расчёт стоимости...");
+    await delay(500);
+    console.log("Стоимость: 1500 руб.");
+    console.log("Подтверждение заказа...");
+    await delay(500);
+    console.log("Заказ подтверждён");
+  } catch (error) {
+    console.log("Ошибка при обработке заказа:", error);
+  }
+}
+processOrder();
