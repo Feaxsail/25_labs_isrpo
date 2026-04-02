@@ -322,3 +322,64 @@ async function processOrder() {
   }
 }
 processOrder();
+
+
+
+//  Шаг 11
+console.log("Fetch API");
+
+// GET-запрос
+async function getUsers() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    if (!response.ok) {
+      throw new Error(`HTTP ошибка! Статус: ${response.status}`);
+    }
+    const users = await response.json();
+    console.log("Первые 3 пользователя:");
+    users.slice(0, 3).forEach((user) => {
+      console.log(`- ${user.name} (${user.email})`);
+    });
+  } catch (error) {
+    console.log("Ошибка при загрузке пользователей:", error.message);
+  }
+}
+getUsers();
+
+// Получение одного пользователя
+async function getUserById(id) {
+  try {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+    if (!response.ok) throw new Error(`Статус: ${response.status}`);
+    const user = await response.json();
+    console.log(`Пользователь с ID ${id}: ${user.name}, ${user.email}`);
+  } catch (error) {
+    console.log("Ошибка:", error.message);
+  }
+}
+getUserById(1);
+
+// POST-запрос
+async function createPost() {
+  try {
+    const newPost = {
+      title: "Моя первая запись",
+      body: "Это содержание моей первой записи в блоге",
+      userId: 1,
+    };
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPost),
+    });
+    const createdPost = await response.json();
+    console.log("Создана новая запись:");
+    console.log("ID:", createdPost.id);
+    console.log("Заголовок:", createdPost.title);
+  } catch (error) {
+    console.log("Ошибка при создании записи:", error.message);
+  }
+}
+createPost();
